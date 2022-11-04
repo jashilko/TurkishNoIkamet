@@ -5,6 +5,10 @@ name = "pypi"
 
 [packages]
 flask = "*"
+pandas = "*"
+xlrd = "==1.2.0"
+requests = "*"
+bson = "*"
 
 [dev-packages]
 

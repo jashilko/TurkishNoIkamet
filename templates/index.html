@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container-fluid">
+    <h3>{% block title %} Закрытые районы Турции (Стамбул, Мерсин, Измир, Анталия) {% endblock %}</h3>
+    <h5>Как это работает: </h5>
+    <ol>
+ <li>С сайта www.goc.gov.tr/mahalle-kapatma-duyurusu-hk2 ежедневно скачивается Excel с данными</li>
+ <li>На карте отрисовывается ежедневная актуальная информация</li>
+</ol>
+</div>
+    <div id="map" style="height: 500px"></div>
+
+
+{% endblock %}
+
+{% block script %}
+<script type="text/javascript">
+        ymaps.ready(init);
+        function init(){
+            var myMap = new ymaps.Map("map", {
+                center: [29.05, 41.05],
+                zoom: 10
+            });
+
+            {% for key, value in polygons.items() %}
+			var p = new ymaps.Polygon({{ value }}, {balloonContent : "{{ key }}"}, {fillColor: '#eb4438', interactivityModel: 'default#transparent',
+    strokeWidth: 1, opacity: 0.5, strokeColor: '#eb2113'});
+			myMap.geoObjects.add(p);
+			{% endfor %}
+
+
+    //{% for point in points %}
+	ymaps.geocode('Mersin Akdeniz ÇAY MAHALLESİ', {
+        results: 10,
+        kind: 'street',
+        provider: 'yandex#map'
+    }).then(function (res) {
+
+
+            // Добавляем первый найденный геообъект на карту.
+            myMap.geoObjects.add(res.geoObjects.get(0));
+            myMap.geoObjects.add(res.geoObjects.get(1));
+            console.log('111: ', res.geoObjects.get(0).properties.getAll());
+            console.log('1211: ', res.geoObjects.get(1).properties.getAll());
+            console.log('1311: ', res.geoObjects.get(2).properties.getAll());
+            console.log('111: ', res.geoObjects.get(0).properties.getAll());
+            console.log('111: ', res.geoObjects.get(0).properties.getAll());
+
+
+
+
+
+
+        });
+	//{% endfor %}
+
+		}
+    </script>
+{% endblock %}
